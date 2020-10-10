@@ -26,24 +26,10 @@ const FuncStyled = styled.div`
   }
 `;
 
-const Functions = ({ clickRecord }) => {
-  const clickFunc = e => {
-    console.log(clickRecord);
-    switch(e.target.className) {
-      case 'clear':
-        console.log('clear');
-        break;
-      
-      case 'erase':
-        console.log('erase');
-        break;
-
-      default: return;
-    }
-  };
-
+const Functions = ({ clickFunc }) => {
   return (
     <FuncStyled
+      className="functions"
       onClick={clickFunc}
     >
       <button

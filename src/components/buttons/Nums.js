@@ -5,14 +5,27 @@ const NumStyled = styled.div`
   width: 75%;
 
   button {
-    width: 33%;
+    width: 33.3%;
+  }
+
+  .number {
+    background: #fff;
+    
+    &:hover {
+      background: #333;
+      color: #fff;
+    }
+
+    &:active {
+      background: #444;
+    }
   }
 
   .zero {
-    width: 66%;
+    width: 66.6%;
   }
 
-  .equal {
+  .total {
     background: #eee;
 
     &:hover {
@@ -81,14 +94,14 @@ const nums = [
 
 const Nums = ({ clickBtn, clickSubmit }) => {
   return (
-    <NumStyled>
+    <NumStyled className="num">
       {nums.map(v => {
         return (
           <button
             key={v.id}
             type="button"
             onClick={clickBtn}
-            className={v.eng}
+            className={`number ${v.eng}`}
           >
             {v.num}
           </button>
@@ -96,8 +109,8 @@ const Nums = ({ clickBtn, clickSubmit }) => {
       })}
       <button
         type="submit"
-        onSubmit={clickSubmit}
-        className="equal"
+        onClick={clickSubmit}
+        className="total"
       >
         =
       </button>

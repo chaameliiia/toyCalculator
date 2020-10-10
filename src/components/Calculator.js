@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Functions from './buttons/Functions';
 import Nums from './buttons/Nums';
@@ -18,7 +18,6 @@ const CalculatorStyled = styled.div`
     button {
       border: 1px solid #333;
       border-radius: 4px;
-      background: none;
       height: 70px;
       outline-style: none;
 
@@ -31,6 +30,11 @@ const CalculatorStyled = styled.div`
         background: #444;
       }
     }
+    
+    .num {
+      
+
+    }
   }
 `;
 
@@ -38,18 +42,47 @@ const Calculator = () => {
   const [btnText, setBtnText] = useState('');
   const [result, setResult] = useState('');
 
-  const _clickBtn = e => {
+  const _clickNum = e => {
     e.preventDefault();
+    console.log(btnText);
     setBtnText(btnText + e.target.textContent);
   };
 
   const _clickSubmit = e => {
     e.preventDefault();
-    setResult(btnText.split(''));
-    console.log(result);
+    console.log(btnText);
   }
 
+  const _clickOper = e => {
+    e.preventDefault();
+    setBtnText(btnText + e.target.textContent);
+  
+  }
 
+  const _clickFunc = e => {
+    e.preventDefault();
+    const clearing = () => {
+      console.log('clear');
+      setBtnText('');
+    };
+
+    const erasing = () => {
+      console.log('erase');
+      setBtnText(btnText.slice(0, btnText.length - 1));
+    };
+
+    switch(e.target.className) {
+      case 'clear':
+        clearing();
+        break;
+
+      case 'erase':
+        erasing();
+        break;
+
+      default: return;
+    }
+  };
 
   return (
     <CalculatorStyled>
@@ -62,21 +95,16 @@ const Calculator = () => {
         id="calculator"
         method="get"
         name="calculator"
-        onSubmit={_clickSubmit}
       >
         <Functions
-          clickRecord={btnText}
-          clickBtn={_clickBtn}
-          className="functions"
+          clickFunc={_clickFunc}
         />
         <Nums
-          clickBtn={_clickBtn}
+          clickBtn={_clickNum}
           clickSubmit={_clickSubmit}
-          className="num"
         />
         <Operands
-          clickBtn={_clickBtn}
-          className="operands"
+          clickBtn={_clickOper}
         />
       </form>
     </CalculatorStyled>

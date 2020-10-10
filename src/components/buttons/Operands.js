@@ -44,12 +44,12 @@ const symbols = [
 
 const Operands = ({ clickBtn }) => {
   return (
-    <OperStyled>
+    <OperStyled className="operands">
       {symbols.map(v => {
         return (
           <button
             key={v.id}
-            type="button"
+            type="submit"
             onClick={clickBtn}
             className={v.eng}
           >
