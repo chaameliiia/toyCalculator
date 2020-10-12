@@ -26,7 +26,6 @@ const ResultWindowStyled = styled.div`
 `;
 
 const ResultWindow = ({ clickRecord }) => {
-  console.log(clickRecord);
   return (
     <ResultWindowStyled>
       <p className="clickRecord">

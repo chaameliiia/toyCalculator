@@ -30,40 +30,51 @@ const CalculatorStyled = styled.div`
         background: #444;
       }
     }
-    
-    .num {
-      
-
-    }
   }
 `;
 
 const Calculator = () => {
   const [btnText, setBtnText] = useState('');
-  const [result, setResult] = useState('');
-
+  const [numFirst, setNumFirst] = useState(0);
+  const [numSecond, setNumSecond] = useState(0);
+  const [result, setResult] = useState(0);
+  const [operand, setOperand] = useState('');
+  const [countOper, setCountOper] = useState(0);
+  
   const _clickNum = e => {
     e.preventDefault();
-    console.log(btnText);
     setBtnText(btnText + e.target.textContent);
   };
 
   const _clickSubmit = e => {
     e.preventDefault();
+    setCountOper(0);
     console.log(btnText);
   }
 
   const _clickOper = e => {
+    const textContent = e.target.textContent;
     e.preventDefault();
-    setBtnText(btnText + e.target.textContent);
-  
+    setCountOper(countOper + 1);
+    setBtnText(btnText + textContent);
+    setOperand(textContent);
+    setNumFirst(parseInt(btnText));
+    console.log('numFirst', numFirst);
+    if(countOper > 0) {
+      setNumSecond(numSecond + textContent);
+    }
+    console.log('numSecond', numSecond);
   }
 
   const _clickFunc = e => {
     e.preventDefault();
+
     const clearing = () => {
       console.log('clear');
       setBtnText('');
+      setCountOper(0);
+      setNumFirst(0);
+      setResult(0);
     };
 
     const erasing = () => {
