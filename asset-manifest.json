@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/toyCalculator/static/css/main.435b7140.chunk.css",
+    "main.js": "/toyCalculator/static/js/main.3191c76a.chunk.js",
+    "main.js.map": "/toyCalculator/static/js/main.3191c76a.chunk.js.map",
+    "runtime-main.js": "/toyCalculator/static/js/runtime-main.7c17a3c9.js",
+    "runtime-main.js.map": "/toyCalculator/static/js/runtime-main.7c17a3c9.js.map",
+    "static/js/2.a4c137bb.chunk.js": "/toyCalculator/static/js/2.a4c137bb.chunk.js",
+    "static/js/2.a4c137bb.chunk.js.map": "/toyCalculator/static/js/2.a4c137bb.chunk.js.map",
+    "index.html": "/toyCalculator/index.html",
+    "precache-manifest.d3cfa15298b26e782c4bd5360ae8fcf3.js": "/toyCalculator/precache-manifest.d3cfa15298b26e782c4bd5360ae8fcf3.js",
+    "service-worker.js": "/toyCalculator/service-worker.js",
+    "static/css/main.435b7140.chunk.css.map": "/toyCalculator/static/css/main.435b7140.chunk.css.map",
+    "static/js/2.a4c137bb.chunk.js.LICENSE.txt": "/toyCalculator/static/js/2.a4c137bb.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.7c17a3c9.js",
+    "static/js/2.a4c137bb.chunk.js",
+    "static/css/main.435b7140.chunk.css",
+    "static/js/main.3191c76a.chunk.js"
+  ]
+}
