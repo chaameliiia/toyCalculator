@@ -35,17 +35,17 @@ const CalculatorStyled = styled.div`
 
 const Calculator = () => {
   const [btnText, setBtnText] = useState(''); // 현재 입력값
-  const [operA, setOperA] = useState(''); // 현재 연산자
-  const [operB, setOperB] = useState(operA); // 이전 연산자
+  const [calText, setCalText] = useState(''); // 이전 입력값
+  const [operA, setOperA] = useState(''); // ex operand
+  const [operB, setOperB] = useState(''); // current operand
   const [result, setResult] = useState(0); // 현재 결과
-  const [calText, setCalText] = useState(result); // 이전 입력값
   let textContent;
 
   const _clickNum = e => {
     textContent = e.target.textContent;
     e.preventDefault();
     setBtnText(parseInt(btnText + textContent));
-    console.log(btnText);
+    // console.log('clickNum_btnText::', btnText);
   };
 
   const _clickSubmit = e => {
@@ -53,49 +53,44 @@ const Calculator = () => {
     // console.log(result);
   }
 
-  const calculate = (operA, btnText, calText) => {
-    console.log(btnText, calText);
-    switch (operA){ // 이전 연산자를 받아서 switch문으로 각 operand에 따라 계산되도록
+  const _clickOper = (e) => { // calText, btnText 연산 실행
+    textContent = e.target.textContent;
+    setOperA(textContent);
+    e.preventDefault();
+    setOperB(textContent); // 현재 클릭한 연산자
+    console.log(operA,'operandA');
+    console.log(operB,'operandB');
+
+    switch (operB){ // 이전 연산자를 받아서 switch문으로 각 operand에 따라 계산되도록
     case '+':
-      setResult(btnText + calText);
-      console.log('+ result', result);
+      // console.log('+입니다')
+      setResult(parseInt(btnText) + parseInt(calText)); // 123 + 456
+      // console.log(result,'+일떄의 값입니다')
+      // function call (btnText,calText){
+
+      //   result = A+B;
+      // }
+      // call();
       break;
     case '-':
-      setResult(parseInt(btnText - calText));
-      console.log('- result', result);
+      setResult(parseInt(btnText) - parseInt(calText)); 
       break;
     case '*':
-      setResult(parseInt(btnText * calText));
-      console.log('* result', result);
+      setResult(parseInt(btnText) * parseInt(calText)); 
       break;
     case '/':
-      setResult(parseInt(btnText / calText));
-      console.log('/ result', result);
+      setResult(parseInt(btnText) / parseInt(calText));
       break;
+    // case '=':
+    //   break;
     default :
-      setResult(btnText);
-      console.log('default result', result);
+      setResult(parseInt(btnText));
       break;
     }
-
-    return (result);
-  };
-
-  const _clickOper = e => { // calText, btnText 연산 실행
-    textContent = e.target.textContent;
-    e.preventDefault();
-
-    setOperA(textContent);
-    console.log('operA', operA);
-
-    calculate(operA, btnText, calText); // 연산
     
-    setCalText(result); // 이전에 연산한 값
-    console.log('calText', calText);
-
-    setOperB(operA) // 현재 연산자를 다음 연산자로 저장
-    console.log('operB', operB);
-    console.log('total_result', result);
+    setCalText(parseInt(result)) // 이전에 연산한 값
+    // setResult(result)
+    setOperB(operA)
   }
 
   const _clickFunc = e => {
