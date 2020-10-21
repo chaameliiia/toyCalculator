@@ -33,103 +33,53 @@ const CalculatorStyled = styled.div`
   }
 `;
 
-const Calculator = () => {
+const CalculatorLSH = () => {
   const [btnText, setBtnText] = useState(''); // 현재 입력값
   const [operA, setOperA] = useState(''); // 현재 연산자
-  const [operB, setOperB] = useState(operA); // 이전 연산자
-  const [result, setResult] = useState(0); // 현재 결과
-  const [calText, setCalText] = useState(result); // 이전 입력값
-  let textContent;
+  const [operB, setOperB] = useState(''); // 이전 연산자
+  const [calText, setCalText] = useState(0); // 이전 입력값
 
   const _clickNum = e => {
-    textContent = e.target.textContent;
     e.preventDefault();
-    setBtnText(parseInt(btnText + textContent));
-    console.log(btnText);
+    const textContent = btnText+e.target.textContent;
+    setBtnText(parseInt(textContent));
   };
-
-  const _clickSubmit = e => {
-    e.preventDefault();
-    // console.log(result);
-  }
-
-
-  const calculate = (operA, btnText, calText) => {
-    console.log(btnText, calText);
-    switch (operA){ // 이전 연산자를 받아서 switch문으로 각 operand에 따라 계산되도록
-    case '+':
-      setResult(btnText + calText);
-      console.log('+ result', result);
-      break;
-    case '-':
-      setResult(parseInt(btnText - calText));
-      console.log('- result', result);
-      break;
-    case '*':
-      setResult(parseInt(btnText * calText));
-      console.log('* result', result);
-      break;
-    case '/':
-      setResult(parseInt(btnText / calText));
-      console.log('/ result', result);
-      break;
-    default :
-      setResult(btnText);
-      console.log('default result', result);
-      break;
-    }
-
-    return (result);
-  };
-
   const _clickOper = e => { // calText, btnText 연산 실행
-    textContent = e.target.textContent;
     e.preventDefault();
-
+    const textContent = e.target.textContent;
     setOperA(textContent);
-    console.log('operA', operA);
-
-    // // useMemo 사용하기
-    // const calcaulation = useMemo(()=>{
-    // const result =0;
-    // calculate(operA, btnText, calText);
-    // return result
-    // },[operA])// 연산
-     
-    calculate(operA, btnText, calText);
-    
-    setCalText(result); // 이전에 연산한 값
-    console.log('calText', calText);
-
+    calculate(operB, btnText, calText);
     setOperB(operA) // 현재 연산자를 다음 연산자로 저장
-    console.log('operB', operB);
-    console.log('total_result', result);
   }
-
-  const _clickFunc = e => {
+ const _clickFunc = e => {
     e.preventDefault();
-
     const clearing = () => {
-      console.log('clear');
       setBtnText('');
     };
-
     const erasing = () => {
-      console.log('erase');
       setBtnText(btnText.slice(0, btnText.length - 1));
     };
-
     switch(e.target.className) {
       case 'clear':
         clearing();
         break;
-
       case 'erase':
         erasing();
         break;
-
       default: return;
     }
+  };
+  const _clickSubmit = e => {
+    e.preventDefault();
+  }
+  const calculate = (operB, btnText, calText) => {
+    const answer = btnText + calText;
+    setCalText(answer); // 이전에 연산한 값
+    console.log(answer,"answer")
+    console.log(operB,"operB")
+    console.log(btnText,"btnText")
+    console.log(calText,"calText")
+    return answer;
   };
 
   return (
@@ -160,4 +110,4 @@ const Calculator = () => {
   );
 };
 
-export default Calculator;
+export default CalculatorLSH;
