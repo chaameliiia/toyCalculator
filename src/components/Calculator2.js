@@ -33,7 +33,7 @@ const CalculatorStyled = styled.div`
   }
 `;
 
-const CalculatorLSH = () => {
+const Calculator2 = () => {
   const [btnText, setBtnText] = useState(''); // 현재 입력값
   const [operA, setOperA] = useState(''); // 현재 연산자
   const [operB, setOperB] = useState(''); // 이전 연산자
@@ -110,4 +110,4 @@ const CalculatorLSH = () => {
   );
 };
 
-export default CalculatorLSH;
+export default Calculator2;
