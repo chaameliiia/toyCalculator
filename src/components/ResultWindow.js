@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 const ResultWindowStyled = styled.div`
@@ -12,27 +12,31 @@ const ResultWindowStyled = styled.div`
   width: 100%;
 
   .clickRecord {
-    border: 1px solid #fff;
+    color: #ccc;
+    font-size: .8em;
     height: 35%;
     vertical-align: middle;
     width: 100%;
   }
 
-  .result {
-    border: 1px solid #ff0;
+  .calcResult {
+    font-size: 1.5em;
     height: 65%;
     width: 100%;
   }
 `;
 
-const ResultWindow = ({ clickRecord }) => {
+const ResultWindow = ({ clickRecord, calcResult }) => {
+  useEffect(() => {
+    console.log(calcResult);
+  }, [calcResult]);
   return (
     <ResultWindowStyled>
       <p className="clickRecord">
         {clickRecord}
       </p>
-      <p className="result">
-      
+      <p className="calcResult">
+        {calcResult}
       </p>     
     </ResultWindowStyled>
   );

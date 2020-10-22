@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import Functions from './buttons/Functions';
 import Nums from './buttons/Nums';
@@ -34,76 +34,59 @@ const CalculatorStyled = styled.div`
 `;
 
 const Calculator = () => {
-  const [btnText, setBtnText] = useState(''); // 현재 입력값
-  const [operA, setOperA] = useState(''); // 현재 연산자
-  const [operB, setOperB] = useState(operA); // 이전 연산자
-  const [result, setResult] = useState(0); // 현재 결과
-  const [calText, setCalText] = useState(result); // 이전 입력값
-  let textContent;
+  const [btnText, setBtnText] = useState('');
+  const result = useRef(0);
+  const calArr = [];
+  const numArr = [];
+  let textContent, idx;
 
   const _clickNum = e => {
-    textContent = e.target.textContent;
     e.preventDefault();
-    setBtnText(parseInt(btnText + textContent));
-    console.log(btnText);
+    textContent = e.target.textContent;
+    setBtnText(btnText + textContent);
+  };
+
+  const calculate = (a, b, oper) => {
+    switch(oper) {
+      case '+':
+        result.current = a + b;
+        break;
+      case '-':
+        result.current = a - b;
+        break;
+      case '*':
+        result.current = a * b;
+        break;
+      case '/':
+        result.current = a / b;
+        break;
+      default: break;
+    }
+    return result
   };
 
   const _clickSubmit = e => {
     e.preventDefault();
-    // console.log(result);
+    console.log(typeof btnText);
+    textContent = e.target.textContent;
+    setBtnText(btnText + textContent);
+    numArr.push(btnText.split(/[^0-9]/g));
+    for(let i = 0; i < btnText.length; i++) {
+      calArr.push(btnText.split('')[i]);
+    }
+    calArr.map((v, i) => {
+      if(isNaN(parseInt(v))) {
+        idx = i;
+      }
+      return idx;
+    });
+    calculate(parseInt(numArr[0][0]), parseInt(numArr[0][1]), calArr[idx]);
   }
 
-
-  const calculate = (operA, btnText, calText) => {
-    console.log(btnText, calText);
-    switch (operA){ // 이전 연산자를 받아서 switch문으로 각 operand에 따라 계산되도록
-    case '+':
-      setResult(btnText + calText);
-      console.log('+ result', result);
-      break;
-    case '-':
-      setResult(parseInt(btnText - calText));
-      console.log('- result', result);
-      break;
-    case '*':
-      setResult(parseInt(btnText * calText));
-      console.log('* result', result);
-      break;
-    case '/':
-      setResult(parseInt(btnText / calText));
-      console.log('/ result', result);
-      break;
-    default :
-      setResult(btnText);
-      console.log('default result', result);
-      break;
-    }
-
-    return (result);
-  };
-
   const _clickOper = e => { // calText, btnText 연산 실행
-    textContent = e.target.textContent;
     e.preventDefault();
-
-    setOperA(textContent);
-    console.log('operA', operA);
-
-    // // useMemo 사용하기
-    // const calcaulation = useMemo(()=>{
-    // const result =0;
-    // calculate(operA, btnText, calText);
-    // return result
-    // },[operA])// 연산
-     
-    calculate(operA, btnText, calText);
-    
-    setCalText(result); // 이전에 연산한 값
-    console.log('calText', calText);
-
-    setOperB(operA) // 현재 연산자를 다음 연산자로 저장
-    console.log('operB', operB);
-    console.log('total_result', result);
+    textContent = e.target.textContent;
+    setBtnText(btnText + textContent);
   }
 
   const _clickFunc = e => {
@@ -112,6 +95,7 @@ const Calculator = () => {
     const clearing = () => {
       console.log('clear');
       setBtnText('');
+      result.current = 0;
     };
 
     const erasing = () => {
@@ -133,10 +117,11 @@ const Calculator = () => {
   };
 
   return (
-    <CalculatorStyled> 
-    {/* 계산부분 */}
-      <ResultWindow //출력부분
+    <CalculatorStyled>
+      {/* 계산부 */}
+      <ResultWindow // 출력부
         clickRecord={btnText}
+        calcResult={result.current}
         className="ResultWindow"
       />
       <form
@@ -145,15 +130,15 @@ const Calculator = () => {
         method="get"
         name="calculator"
       >
-        <Functions //기능
+        <Functions //기능 버튼
           clickFunc={_clickFunc}
         />
-        <Nums //숫자버튼
+        <Nums // 숫자 버튼
           clickBtn={_clickNum}
           clickSubmit={_clickSubmit}
         />
         <Operands
-          clickBtn={_clickOper} //수식버튼
+          clickBtn={_clickOper} // 연산자 버튼
         />
       </form>
     </CalculatorStyled>

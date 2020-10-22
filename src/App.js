@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Calculator2 from './components/Calculator2';
+import Calculator from './components/Calculator';
 import RecordWindow from './components/RecordWindow';
 import 'asset/common.css';
 
@@ -16,7 +16,7 @@ const CalcWrapperStyled = styled.div`
 function App() {
   return (
     <CalcWrapperStyled className="calcWrapper">
-      <Calculator2 />
+      <Calculator />
       <RecordWindow />
     </CalcWrapperStyled>
   );
