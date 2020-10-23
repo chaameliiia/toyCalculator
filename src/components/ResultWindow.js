@@ -28,7 +28,6 @@ const ResultWindowStyled = styled.div`
 
 const ResultWindow = ({ clickRecord, calcResult }) => {
   useEffect(() => {
-    console.log(calcResult);
   }, [calcResult]);
   return (
     <ResultWindowStyled>

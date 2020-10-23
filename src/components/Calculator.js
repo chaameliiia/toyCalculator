@@ -35,71 +35,89 @@ const CalculatorStyled = styled.div`
 
 const Calculator = () => {
   const [btnText, setBtnText] = useState('');
-  const result = useRef(0);
-  const calArr = [];
-  const numArr = [];
-  let textContent, idx;
+  const [result, setResult] = useState(0);
+  let operA = useRef('');
+  let operB = useRef('');
+  let preResult = useRef('');
+  let newText = useRef('');
+  let bln = useRef(false);
+  let textContent; 
 
-  const _clickNum = e => {
-    e.preventDefault();
-    textContent = e.target.textContent;
-    setBtnText(btnText + textContent);
-  };
-
-  const calculate = (a, b, oper) => {
-    switch(oper) {
+  const calculate = (operB, result, newNum) => {
+    // 이전 결과값, 새 입력값 연산 함수
+    switch(operB) {
       case '+':
-        result.current = a + b;
+        setResult(result + newNum);
         break;
       case '-':
-        result.current = a - b;
+        setResult(result - newNum);
         break;
       case '*':
-        result.current = a * b;
+        setResult(result * newNum);
         break;
       case '/':
-        result.current = a / b;
+        setResult(result / newNum);
         break;
-      default: break;
+      default: 
+        setResult(btnText);
+        break;
     }
-    return result
+    newText.current = 0;
+    return result;
   };
 
-  const _clickSubmit = e => {
+  const _clickNum = e => { // 숫자 버튼 누를 때
     e.preventDefault();
-    console.log(typeof btnText);
     textContent = e.target.textContent;
     setBtnText(btnText + textContent);
-    numArr.push(btnText.split(/[^0-9]/g));
-    for(let i = 0; i < btnText.length; i++) {
-      calArr.push(btnText.split('')[i]);
+    newText.current += textContent;
+    bln.current = false;
+  };
+
+  const _clickSubmit = e => { // = 버튼 누를 때
+    e.preventDefault();
+    textContent = e.target.textContent;
+    calculate(operB.current, parseInt(result), parseInt(newText.current));
+    bln.current = false;
+  };
+
+  const _clickOper = e => { // 연산자 버튼 누를 때
+    let newBtnTxt = btnText;
+    e.preventDefault();
+    textContent = e.target.textContent;
+    if(btnText === '') { // 연산할 숫자 없을 경우
+      return;
     }
-    calArr.map((v, i) => {
-      if(isNaN(parseInt(v))) {
-        idx = i;
-      }
-      return idx;
-    });
-    calculate(parseInt(numArr[0][0]), parseInt(numArr[0][1]), calArr[idx]);
-  }
+    if(operB.current === textContent) { // 같은 연산자 연속으로 누른 경우
+      return;
+    }
+    
+    if(bln.current) { // 기존 연산자 다른 연산자로 덮어쓰기
+      newBtnTxt = newBtnTxt.slice(0, newBtnTxt.length - 1);
+      // 마지막 연산자 1개 제거
+    } else {
+      bln.current = true;
+    }
 
-  const _clickOper = e => { // calText, btnText 연산 실행
+    setBtnText(newBtnTxt + textContent);
+    operA.current = textContent;
+    calculate(operB.current, parseInt(result), parseInt(newText.current));
+    operB.current = operA.current; // 현재 연산자를 다음 연산자로
+    newText.current = 0;
+  };
+
+  const _clickFunc = e => { // 기능 버튼 누를 때
     e.preventDefault();
-    textContent = e.target.textContent;
-    setBtnText(btnText + textContent);
-  }
 
-  const _clickFunc = e => {
-    e.preventDefault();
-
-    const clearing = () => {
-      console.log('clear');
+    const clearing = () => { // 전체 값 초기화
       setBtnText('');
-      result.current = 0;
+      setResult(0);
+      operA.current = '';
+      operB.current = '';
+      bln.current = false;
     };
 
-    const erasing = () => {
-      console.log('erase');
+    const erasing = () => { // 마지막 한 글자 지우기
       setBtnText(btnText.slice(0, btnText.length - 1));
     };
 
@@ -121,7 +139,7 @@ const Calculator = () => {
       {/* 계산부 */}
       <ResultWindow // 출력부
         clickRecord={btnText}
-        calcResult={result.current}
+        calcResult={result}
         className="ResultWindow"
       />
       <form
@@ -144,5 +162,113 @@ const Calculator = () => {
     </CalculatorStyled>
   );
 };
+
+// 이전 작업물
+// const Calculator = () => {
+//   const [btnText, setBtnText] = useState('');
+//   const [result, setResult] = useState(0);
+//   const operand = useRef('');
+//   const calArr = [];
+//   const numArr = [];
+//   let textContent, idx; 
+//   const bln = useRef(false);
+
+//   const calculate = (a, b, oper) => {
+//     switch(oper) {
+//       case '+':
+//         result.current = a + b;
+//         break;
+//       case '-':
+//         result.current = a - b;
+//         break;
+//       case '*':
+//         result.current = a * b;
+//         break;
+//       case '/':
+//         result.current = a / b;
+//         break;
+//       default: break;
+//     }
+//     return result
+//   };
+
+//   const extract = () => {
+//     numArr.push(btnText.split(/[^0-9]/g)); // 숫자 추출 123, 4
+//     for(let i = 0; i < btnText.length; i++) { // 연산자 추출 1, 2, 3, *, 4
+//       calArr.push(btnText.split('')[i]);
+//     }
+//     calArr.map((v, i) => {
+//       if(isNaN(parseInt(v))) {
+//         idx = i;
+//       }
+//       return idx;
+//     });
+//     calculate(parseInt(numArr[0][0]), parseInt(numArr[0][1]), calArr[idx]);
+//   };
+
+//   const _clickNum = e => {
+//     e.preventDefault();
+//     bln.current = false;
+//     textContent = e.target.textContent;
+//     setBtnText(btnText + textContent);
+//   };
+
+//   const _clickSubmit = e => {
+//     e.preventDefault();
+//     bln.current = false;
+//     if(btnText === '') {
+//       return;
+//     }
+//     textContent = e.target.textContent;
+//     setBtnText(btnText + textContent);
+//     extract();
+//   };
+
+//   const _clickOper = e => { // calText, btnText 연산 실행
+//     e.preventDefault();
+//     let a = btnText;
+//     textContent = e.target.textContent;
+//     if(btnText === '') { // 연산할 숫자 없을 경우
+//       return;
+//     }
+//     if(operand.current === textContent) { // 같은 연산자 연속으로 누른 경우
+//       return;
+//     }
+//     if(bln.current) {
+//       a = a.slice(0, a.length - 1);
+//     }
+//     console.log(a.slice(0, a.length - 1));
+//     operand.current = textContent;
+//     a += textContent;
+//     setBtnText(a);
+//     bln.current = true;
+//     extract();
+//   };
+
+//   const _clickFunc = e => {
+//     e.preventDefault();
+
+//     const clearing = () => {
+//       setBtnText('');
+//       result.current = 0;
+//     };
+
+//     const erasing = () => {
+//       setBtnText(btnText.slice(0, btnText.length - 1));
+//     };
+
+//     switch(e.target.className) {
+//       case 'clear':
+//         clearing();
+//         break;
+
+//       case 'erase':
+//         erasing();
+//         break;
+
+//       default: return;
+//     }
+//   };
+// };
 
 export default Calculator;
