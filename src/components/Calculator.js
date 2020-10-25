@@ -8,7 +8,23 @@ import ResultWindow from './ResultWindow';
 const CalculatorStyled = styled.div`
   display: flex;
   flex-direction: column;
+  position: relative;
   width: 65%;
+
+  .clickRecord {
+    background: transparent;
+    border: none;
+    color: #ccc;
+    font-size: .8em;
+    left: 0;
+    outline-style: none;
+    padding-right: .7rem;
+    padding-top: .7rem;
+    position: absolute;
+    top: 0;
+    text-align: right;
+    width: 100%;
+  }
   
   form {
     display: flex;
@@ -38,12 +54,11 @@ const Calculator = () => {
   const [result, setResult] = useState(0);
   let operA = useRef('');
   let operB = useRef('');
-  let preResult = useRef('');
   let newText = useRef('');
   let bln = useRef(false);
   let numClicked = useRef(false);
   let operClicked = useRef(false);
-  let textContent; 
+  let textContent;
 
   const calculate = (operB, result, newNum) => {
     // 이전 결과값, 새 입력값 연산 함수
@@ -69,7 +84,12 @@ const Calculator = () => {
     return result;
   };
 
-  const _clickNum = e => { // 숫자 버튼 누를 때
+  const _changeValue = e => { // 키보드로 숫자 입력할 때
+    console.log(typeof e.target.keyCode);
+    setBtnText(e.target.value);
+  }
+
+  const _clickNum = e => { // 숫자 버튼 클릭할 때
     e.preventDefault();
     textContent = e.target.textContent;
     setBtnText(btnText + textContent);
@@ -78,7 +98,7 @@ const Calculator = () => {
     numClicked.current = true;
   };
 
-  const _clickSubmit = e => { // = 버튼 누를 때
+  const _clickSubmit = e => { // = 버튼 클릭할 때
     e.preventDefault();
     textContent = e.target.textContent;
     calculate(operB.current, Number(result), Number(newText.current));
@@ -88,7 +108,7 @@ const Calculator = () => {
     bln.current = false;
   };
 
-  const _clickOper = e => { // 연산자 버튼 누를 때
+  const _clickOper = e => { // 연산자 버튼 클릭할 때
   // b=true
     let newBtnTxt = btnText;
     e.preventDefault();
@@ -96,7 +116,7 @@ const Calculator = () => {
     if(btnText === '') { // 연산할 숫자 없을 경우
       return;
     }
-    if(operB.current === textContent) { // 같은 연산자 연속으로 누른 경우
+    if(operB.current === textContent) { // 같은 연산자 연속으로 클릭한 경우
       operClicked.current = true;
 
       if(numClicked === true && operClicked === true) {
@@ -118,11 +138,12 @@ const Calculator = () => {
     newText.current = '';
   };
 
-  const _clickFunc = e => { // 기능 버튼 누를 때
+  const _clickFunc = e => { // 기능 버튼 클릭할 때
     e.preventDefault();
 
     const clearing = () => { // 전체 값 초기화
-      setBtnText('');
+      const clickRecord = document.querySelector('.clickRecord');
+      console.log(clickRecord);
       setResult(0);
       operA.current = '';
       operB.current = '';
@@ -150,8 +171,14 @@ const Calculator = () => {
   return (
     <CalculatorStyled>
       {/* 계산부 */}
+      <input
+        autoFocus
+        value={btnText}
+        type="text"
+        onChange={_changeValue}
+        className="clickRecord"
+      />
       <ResultWindow // 출력부
-        clickRecord={btnText}
         calcResult={result}
         className="ResultWindow"
       />
