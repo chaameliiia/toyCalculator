@@ -15,7 +15,9 @@ const CalcWrapperStyled = styled.div`
 
 function App() {
   return (
-    <CalcWrapperStyled className="calcWrapper">
+    <CalcWrapperStyled
+      className="calcWrapper"
+    >
       <Calculator />
       <RecordWindow />
     </CalcWrapperStyled>

@@ -41,6 +41,8 @@ const Calculator = () => {
   let preResult = useRef('');
   let newText = useRef('');
   let bln = useRef(false);
+  let numClicked = useRef(false);
+  let operClicked = useRef(false);
   let textContent; 
 
   const calculate = (operB, result, newNum) => {
@@ -53,16 +55,17 @@ const Calculator = () => {
         setResult(result - newNum);
         break;
       case '*':
+        newText.current = 1;
         setResult(result * newNum);
         break;
       case '/':
+        newText.current = 1;
         setResult(result / newNum);
         break;
       default: 
         setResult(btnText);
         break;
     }
-    newText.current = 0;
     return result;
   };
 
@@ -72,16 +75,21 @@ const Calculator = () => {
     setBtnText(btnText + textContent);
     newText.current += textContent;
     bln.current = false;
+    numClicked.current = true;
   };
 
   const _clickSubmit = e => { // = 버튼 누를 때
     e.preventDefault();
     textContent = e.target.textContent;
-    calculate(operB.current, parseInt(result), parseInt(newText.current));
+    calculate(operB.current, Number(result), Number(newText.current));
+    setBtnText('');
+    operA.current = '';
+    operB.current = '';
     bln.current = false;
   };
 
   const _clickOper = e => { // 연산자 버튼 누를 때
+  // b=true
     let newBtnTxt = btnText;
     e.preventDefault();
     textContent = e.target.textContent;
@@ -89,7 +97,11 @@ const Calculator = () => {
       return;
     }
     if(operB.current === textContent) { // 같은 연산자 연속으로 누른 경우
-      return;
+      operClicked.current = true;
+
+      if(numClicked === true && operClicked === true) {
+        return;
+      }
     }
     
     if(bln.current) { // 기존 연산자 다른 연산자로 덮어쓰기
@@ -101,9 +113,9 @@ const Calculator = () => {
 
     setBtnText(newBtnTxt + textContent);
     operA.current = textContent;
-    calculate(operB.current, parseInt(result), parseInt(newText.current));
+    calculate(operB.current, Number(result), Number(newText.current));
     operB.current = operA.current; // 현재 연산자를 다음 연산자로
-    newText.current = 0;
+    newText.current = '';
   };
 
   const _clickFunc = e => { // 기능 버튼 누를 때
@@ -119,6 +131,7 @@ const Calculator = () => {
 
     const erasing = () => { // 마지막 한 글자 지우기
       setBtnText(btnText.slice(0, btnText.length - 1));
+      newText.current = newText.current.slice(0, newText.current.length - 1);
     };
 
     switch(e.target.className) {
