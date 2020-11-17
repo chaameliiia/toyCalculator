@@ -125,7 +125,7 @@ const Calculator = () => {
     }
     
     if(bln.current) { // 기존 연산자 다른 연산자로 덮어쓰기
-      newBtnTxt = newBtnTxt.slice(0, newBtnTxt.length - 1);
+      newBtnTxt = newBtnTxt.slikce(0, newBtnTxt.length - 1);
       // 마지막 연산자 1개 제거
     } else {
       bln.current = true;
